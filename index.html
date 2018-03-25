@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>hw1</title>
+        <script src="https://d3js.org/d3.v3.min.js"></script>
+        <script src="d3.js"></script>
+        <script src="d3.min.js"></script>
+    </head>
+    <body>
+        <p> NBA team salaries vs win rate(according to NBA standing in 2018 / 3 / 25
+        </p>
+        <svg id="s">    </svg>
+        <script>
+            var teamData=[ //x means salaries in 2017-2018(millions),y means win % in 2017-2018(according to NBA standing in 2018/3/25)
+                {'x':100,'y':0.288},//ATL
+                {'x':115,'y':0.681},//BOS
+                {'x':96,'y':0.315},//BKN
+                {'x':117,'y':0.438},//CHA
+                {'x':89,'y':0.333},//CHI
+                {'x':137,'y':0.592},//CLE
+                {'x':86,'y':0.301},//DAL
+                {'x':107,'y':0.548},//DEN
+                {'x':120,'y':0.452},//DET
+                {'x':137,'y':0.750},//GSW
+                {'x':119,'y':0.808},//HOU
+                {'x':94,'y':0.575},//IND
+                {'x':119,'y':0.528},//LAC
+                {'x':105,'y':0.444},//LAL
+                {'x':110,'y':0.260},//MEM
+                {'x':131,'y':0.534},//MIA
+                {'x':121,'y':0.528},//MIL
+                {'x':117,'y':0.568},//MIN
+                {'x':120,'y':0.581},//NO
+                {'x':108,'y':0.356},//NY
+                {'x':134,'y':0.595},//OKC
+                {'x':98,'y':0.301},//ORL
+                {'x':101,'y':0.583},//PHI
+                {'x':95,'y':0.257},//SUN
+                {'x':119,'y':0.611},//POR
+                {'x':96,'y':0.329},//SAC
+                {'x':116,'y':0.589},//SAN
+                {'x':117,'y':0.740},//TOR
+                {'x':108,'y':0.562},//UTA
+                {'x':124,'y':0.556},//WAS
+            ];
+
+            var s = d3.select('#s');
+            var width = 1200,
+                height = 675;
+            s.attr({
+                'width': '1366',
+                'height': '768'
+              }).style({
+                'border': '1px dotted #aaa'
+              });
+            var scaleX = d3.scale.linear()
+                .range([0, width])
+                .domain([70, 150]);
+            var scaleY = d3.scale.linear()
+                .range([height, 0])
+                .domain([0, 100]); 
+            var line = d3.svg.line()
+                .x(function(d) {
+                  return scaleX(d.x);
+                }).y(function(d) {
+                  return scaleY(d.y);
+                });
+            var axisX = d3.svg.axis()
+                .scale(scaleX)
+                .orient("bottom")
+                .ticks(10);
+
+            var axisY = d3.svg.axis()
+                .scale(scaleY)
+                .orient("left")
+                .ticks(10)
+                .tickFormat(function(d){return d+'%';});
+
+            s.append('g')
+               .call(axisX)
+               .attr({
+                'fill':'none',
+                'stroke':'#000',
+                'transform':'translate(120,'+(height+20)+')' 
+               }).selectAll('text')
+               .attr({
+                'fill':'#000',
+                'stroke':'none',
+               }).style({
+                'font-size':'11px'
+               });
+
+            s.append('g')
+               .call(axisY)
+               .attr({
+                'fill':'none',
+                'stroke':'#000',
+                'transform':'translate(120,20)'
+               }).selectAll('text')
+               .attr({
+                'fill':'#000',
+                'stroke':'none',
+               }).style({
+                'font-size':'10px'
+               });
+            for(var i=0;i<30;i++){
+                var target="team_logo/"+i+".png";
+                s.append('svg:image')
+                    .attr({
+                      'xlink:href': target,
+                      x: scaleX(teamData[i].x),
+                      y: scaleY(teamData[i].y*100),
+                      width: 50,
+                      height: 50
+                    });
+            }
+            s.append('text')
+                .attr({
+                'x':600,
+                'y':height+80
+                }).text("team salaries in 2017-2018 season (millions)");
+            s.append('text')
+                .attr({
+                'x':5,
+                'y':height-315,
+                'glyph-orientation-vertical':0
+                }).text("team win rate"); 
+
+        </script>
+    </body>
+</html>  
